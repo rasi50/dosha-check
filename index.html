@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ドーシャ体質チェック | FUTURE VISION LABO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F3EFE4;
+    --panel: #FDFCF8;
+    --ink: #2E2A22;
+    --ink-soft: #6B6558;
+    --line: #DEDACB;
+    --a: #57677F;
+    --a-bg: #E7EBF1;
+    --b: #B8552E;
+    --b-bg: #F5E4DA;
+    --c: #55703A;
+    --c-bg: #E7EEDC;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans JP', sans-serif;
+    line-height:1.7;
+    padding:32px 16px 80px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+
+  .site-badge{
+    text-align:center;
+    font-size:11px;
+    color:var(--ink-soft);
+    letter-spacing:.15em;
+    margin:0 0 14px;
+  }
+  h1{
+    font-family:'Shippori Mincho', serif;
+    font-weight:700;
+    font-size:clamp(22px,4vw,32px);
+    text-align:center;
+    letter-spacing:.08em;
+    margin:0 0 4px;
+  }
+  .sub{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:13px;
+    margin:0 0 18px;
+  }
+  .intro-box{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 18px;
+    margin-bottom:28px;
+    font-size:13px;
+    color:var(--ink-soft);
+    line-height:1.85;
+  }
+  .intro-box strong{color:var(--ink);}
+  .intro-row{display:flex;gap:10px;align-items:baseline;margin:4px 0;}
+  .intro-badge{
+    flex-shrink:0;
+    font-size:10.5px;
+    font-weight:700;
+    padding:2px 8px;
+    border-radius:5px;
+    letter-spacing:.05em;
+  }
+  .badge-p{background:#EAE5D8;color:#5B4F3A;}
+  .badge-v{background:#D9E8DA;color:#2A5433;}
+
+  /* sticky tally */
+  .tally{
+    position:sticky;
+    top:12px;
+    z-index:10;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:12px 16px;
+    margin-bottom:28px;
+    box-shadow:0 2px 10px rgba(46,42,34,.06);
+  }
+  .tally-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:7px;
+  }
+  .tally-row:last-child{margin-bottom:0;}
+  .tally-lbl{
+    width:80px;
+    flex-shrink:0;
+  }
+  .tally-bar{
+    flex:1;
+    height:8px;
+    border-radius:5px;
+    overflow:hidden;
+    display:flex;
+    background:var(--line);
+  }
+  .tally-bar span{height:100%;transition:width .3s ease;}
+  .tally-count{
+    width:38px;
+    text-align:right;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    font-weight:500;
+    flex-shrink:0;
+  }
+
+  /* section headers */
+  .section-header{margin:36px 0 6px;}
+  .section-title{
+    font-family:'Shippori Mincho', serif;
+    font-size:18px;
+    font-weight:500;
+    padding-left:10px;
+    border-left:4px solid var(--ink);
+    margin:0 0 4px;
+  }
+  .section-note{
+    font-size:12px;
+    color:var(--ink-soft);
+    padding-left:14px;
+    margin:0 0 14px;
+  }
+
+  /* question cards */
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:10px;
+  }
+  .q-label{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:0 0 10px;
+    font-weight:500;
+  }
+  .options{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:8px;
+  }
+  @media (max-width:560px){.options{grid-template-columns:1fr;}}
+  .opt{position:relative;display:block;}
+  .opt input{
+    position:absolute;opacity:0;
+    width:100%;height:100%;
+    margin:0;cursor:pointer;
+  }
+  .opt-body{
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px 12px;
+    font-size:13.5px;
+    min-height:56px;
+    transition:border-color .15s, background .15s;
+  }
+  .opt-tag{
+    font-size:11px;font-weight:700;
+    padding:1px 6px;border-radius:5px;flex-shrink:0;
+  }
+  .opt[data-k="A"] .opt-tag{background:var(--a-bg);color:var(--a);}
+  .opt[data-k="B"] .opt-tag{background:var(--b-bg);color:var(--b);}
+  .opt[data-k="C"] .opt-tag{background:var(--c-bg);color:var(--c);}
+  .opt input:checked + .opt-body{border-color:var(--ink);}
+  .opt[data-k="A"] input:checked + .opt-body{background:var(--a-bg);}
+  .opt[data-k="B"] input:checked + .opt-body{background:var(--b-bg);}
+  .opt[data-k="C"] input:checked + .opt-body{background:var(--c-bg);}
+  .opt input:focus-visible + .opt-body{outline:2px solid var(--ink);outline-offset:1px;}
+
+  /* result */
+  .result{margin-top:36px;display:none;}
+  .result.show{display:block;}
+  .result-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-bottom:14px;
+  }
+  @media (max-width:500px){.result-grid{grid-template-columns:1fr;}}
+  .result-card{
+    background:var(--panel);
+    border:2px solid var(--line);
+    border-radius:14px;
+    padding:18px 16px;
+    text-align:center;
+    transition:border-color .3s;
+  }
+  .result-tag{
+    display:inline-block;
+    font-size:10.5px;
+    font-weight:700;
+    padding:2px 10px;
+    border-radius:10px;
+    margin-bottom:10px;
+    letter-spacing:.04em;
+  }
+  .prakriti-card .result-tag{background:#EAE5D8;color:#5B4F3A;}
+  .vikriti-card .result-tag{background:#D9E8DA;color:#2A5433;}
+  .result-dosha{
+    font-family:'Shippori Mincho', serif;
+    font-size:20px;
+    font-weight:700;
+    margin:0 0 4px;
+    transition:color .3s;
+  }
+  .result-dosha-sub{font-size:12px;color:var(--ink-soft);margin:0 0 8px;}
+  .result-score{font-size:12px;color:var(--ink-soft);}
+
+  /* gap card */
+  .gap-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 22px;
+    margin-bottom:14px;
+    transition:background .3s, border-color .3s;
+  }
+  .gap-title{
+    font-family:'Shippori Mincho', serif;
+    font-size:16px;
+    font-weight:700;
+    margin:0 0 8px;
+  }
+  .gap-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.85;}
+
+  /* dosha explorer */
+  .detail{margin-top:40px;display:none;}
+  .detail.show{display:block;}
+  .detail-title{
+    font-family:'Shippori Mincho', serif;
+    font-size:17px;text-align:center;margin:0 0 14px;
+  }
+  .tabs{display:flex;gap:8px;margin-bottom:16px;}
+  .tab{
+    flex:1;text-align:center;
+    padding:12px 8px;border-radius:10px;
+    border:1px solid var(--line);background:var(--panel);
+    cursor:pointer;
+    font-family:'Shippori Mincho', serif;
+    font-size:15px;font-weight:500;
+    color:var(--ink-soft);
+    transition:border-color .15s, background .15s, color .15s;
+  }
+  .tab .tab-jp{
+    display:block;
+    font-family:'Noto Sans JP', sans-serif;
+    font-size:11px;font-weight:400;margin-top:2px;
+  }
+  .tab[data-k="A"].active{border-color:var(--a);background:var(--a-bg);color:var(--a);}
+  .tab[data-k="B"].active{border-color:var(--b);background:var(--b-bg);color:var(--b);}
+  .tab[data-k="C"].active{border-color:var(--c);background:var(--c-bg);color:var(--c);}
+  .tab-badge{
+    display:inline-block;font-size:10px;
+    font-family:'Noto Sans JP', sans-serif;
+    font-weight:700;padding:1px 7px;border-radius:8px;margin-top:6px;
+  }
+  .tab[data-k="A"] .tab-badge{background:var(--a);color:#fff;}
+  .tab[data-k="B"] .tab-badge{background:var(--b);color:#fff;}
+  .tab[data-k="C"] .tab-badge{background:var(--c);color:#fff;}
+  .dosha-panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;overflow:hidden;
+  }
+  .dosha-head{padding:16px 20px;border-bottom:1px solid var(--line);}
+  .dosha-head .name{font-family:'Shippori Mincho', serif;font-size:19px;margin:0;}
+  .dosha-head .kw{font-size:12.5px;color:var(--ink-soft);margin:4px 0 0;}
+  .dosha-row{
+    display:grid;grid-template-columns:96px 1fr 1fr;
+    gap:0;border-bottom:1px solid var(--line);
+  }
+  .dosha-row:last-child{border-bottom:none;}
+  .dosha-row > div{padding:14px 16px;font-size:13px;}
+  .dosha-row .rl{
+    font-weight:500;font-size:12.5px;color:var(--ink-soft);
+    background:var(--bg);display:flex;align-items:center;
+  }
+  .dosha-row .col-head{font-size:11px;color:var(--ink-soft);font-weight:500;margin:0 0 4px;}
+  .dosha-row .west{border-left:1px solid var(--line);}
+  @media (max-width:560px){
+    .dosha-row{grid-template-columns:1fr;}
+    .dosha-row .rl{padding:10px 16px 0;background:none;}
+    .dosha-row .west{border-left:none;border-top:1px dashed var(--line);}
+  }
+
+  .reset{
+    display:block;margin:28px auto 0;
+    background:none;border:1px solid var(--line);
+    color:var(--ink-soft);font-size:13px;
+    padding:8px 18px;border-radius:20px;cursor:pointer;
+  }
+  .reset:hover{border-color:var(--ink);color:var(--ink);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="site-badge">FUTURE VISION LABO</p>
+  <h1>ドーシャ体質チェック</h1>
+  <p class="sub">アーユルヴェーダ 2軸診断</p>
+
+  <div class="intro-box">
+    このチェックでは2つの視点を分けて診断します。
+    <div class="intro-row">
+      <span class="intro-badge badge-p">プラクリティ</span>
+      <span>子どもの頃から変わらない身体の特徴 → <strong>本来の体質</strong></span>
+    </div>
+    <div class="intro-row">
+      <span class="intro-badge badge-v">ヴィクリティ</span>
+      <span>最近1ヶ月の状態 → <strong>今のバランス</strong></span>
+    </div>
+    その差分から、今の乱れと必要なケアが見えてきます。
+  </div>
+
+  <div class="tally">
+    <div class="tally-row">
+      <span class="tally-lbl"><span class="intro-badge badge-p" style="font-size:10px">本質</span></span>
+      <div class="tally-bar">
+        <span id="p-bar-a" style="background:var(--a);width:0%"></span>
+        <span id="p-bar-b" style="background:var(--b);width:0%"></span>
+        <span id="p-bar-c" style="background:var(--c);width:0%"></span>
+      </div>
+      <span class="tally-count" id="p-count">0 / 9</span>
+    </div>
+    <div class="tally-row">
+      <span class="tally-lbl"><span class="intro-badge badge-v" style="font-size:10px">現在</span></span>
+      <div class="tally-bar">
+        <span id="v-bar-a" style="background:var(--a);width:0%"></span>
+        <span id="v-bar-b" style="background:var(--b);width:0%"></span>
+        <span id="v-bar-c" style="background:var(--c);width:0%"></span>
+      </div>
+      <span class="tally-count" id="v-count">0 / 11</span>
+    </div>
+  </div>
+
+  <!-- Section 1: Prakriti -->
+  <div id="quiz-prakriti">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="intro-badge badge-p" style="margin-right:6px">プラクリティ</span>身体の特徴
+      </div>
+      <p class="section-note">子どもの頃から変わらない特徴、または生まれつきの傾向で選んでください</p>
+    </div>
+  </div>
+
+  <!-- Section 2: Vikriti -->
+  <div id="quiz-vikriti">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="intro-badge badge-v" style="margin-right:6px">ヴィクリティ</span>行動と生理機能
+      </div>
+      <p class="section-note">最近1ヶ月の状態で、最も当てはまるものを選んでください</p>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div class="result" id="result">
+    <div class="result-grid">
+      <div class="result-card prakriti-card">
+        <div class="result-tag">本来の体質（プラクリティ）</div>
+        <div class="result-dosha" id="p-name">—</div>
+        <div class="result-dosha-sub" id="p-sub"></div>
+        <div class="result-score" id="p-score"></div>
+      </div>
+      <div class="result-card vikriti-card">
+        <div class="result-tag">今の状態（ヴィクリティ）</div>
+        <div class="result-dosha" id="v-name">—</div>
+        <div class="result-dosha-sub" id="v-sub"></div>
+        <div class="result-score" id="v-score"></div>
+      </div>
+    </div>
+    <div class="gap-card" id="gap-card">
+      <p class="gap-title" id="gap-title"></p>
+      <p class="gap-text" id="gap-text"></p>
+    </div>
+  </div>
+
+  <!-- Dosha Encyclopedia -->
+  <div class="detail" id="detail">
+    <p class="detail-title">各ドーシャの詳細を見る</p>
+    <div class="tabs" id="tabs"></div>
+    <div class="dosha-panel" id="dosha-panel"></div>
+  </div>
+
+  <button class="reset" id="reset">最初からやり直す</button>
+</div>
+
+<script>
+const DATA_PRAKRITI = [
+  {q:"皮膚", a:"薄く乾燥質", b:"日焼けしやすい", c:"厚く脂性"},
+  {q:"髪", a:"細く黒い、くせ毛", b:"細く柔らかい、赤み", c:"豊富で黒い、軽いクセ"},
+  {q:"顔", a:"長く角張る", b:"ハート型", c:"丸顔"},
+  {q:"鼻", a:"小さい", b:"尖る", c:"大きく丸い"},
+  {q:"目", a:"小さい", b:"並", c:"目立つ"},
+  {q:"歯", a:"不規則", b:"中位の大きさ", c:"白く大きい"},
+  {q:"口", a:"小さい", b:"中位の大きさ", c:"大きい"},
+  {q:"唇", a:"薄い", b:"中位の大きさ", c:"ふっくら"},
+  {q:"関節", a:"ポキポキ鳴る・堅い", b:"しまりなく柔らかい", c:"強く引き締まり頑丈"},
+];
+
+const DATA_VIKRITI = [
+  {q:"活動", a:"素早い、率先する", b:"普通", c:"ゆっくり"},
+  {q:"持久力", a:"あまりない", b:"うまく調整できる", c:"スタミナは多い"},
+  {q:"話し方", a:"早口、話が飛ぶ", b:"鋭く明晰、正確", c:"ゆっくり、温かい"},
+  {q:"物覚え", a:"早いがすぐ忘れる", b:"普通", c:"遅いが忘れない"},
+  {q:"理解力・思考", a:"表面的 / 考えるより行動", b:"応用力がある / 論理的、計画実行型", c:"深く理解する / 急がずゆっくり"},
+  {q:"消化力", a:"その時々で違う", b:"強い", c:"遅い（ゆっくり）"},
+  {q:"食欲", a:"食べなくても平気", b:"強く食べないと機嫌が悪い", c:"安定して抜いても平気"},
+  {q:"食べ方の傾向", a:"少しつまむのが好き", b:"一度に沢山食べれる", c:"ながら食べを続ける"},
+  {q:"便通", a:"不規則", b:"1日2回以上", c:"同じ時間、規則的に安定"},
+  {q:"睡眠", a:"浅く目覚めやすい", b:"すっきり適度に熟睡", c:"深く沢山寝る"},
+  {q:"感情・対処", a:"不安、心配症 / 悩みが多く散漫", b:"怒りっぽく批判的 / イライラ怒る", c:"起伏は少ない、所有欲強 / 確実に終える"},
+];
+
+const DOSHA_INFO = {
+  A: {name:"Vata（ヴァータ）", sub:"風・空のエネルギー", color:"var(--a)"},
+  B: {name:"Pitta（ピッタ）", sub:"火・水のエネルギー", color:"var(--b)"},
+  C: {name:"Kapha（カパ）", sub:"水・地のエネルギー", color:"var(--c)"},
+  TIE: {name:"複合タイプ", sub:"複数のドーシャが均衡", color:"var(--ink-soft)"},
+};
+
+const GAP_DATA = {
+  'A-A': {balanced:true, title:"バランスが安定しています", text:"本来のヴァータのエネルギーが安定しています。身体の特徴と現在の状態が一致しており、本質に沿った生活ができています。"},
+  'B-B': {balanced:true, title:"バランスが安定しています", text:"本来のピッタのエネルギーが安定しています。熱と集中力を活かしながら、適切なペースで過ごせている状態です。"},
+  'C-C': {balanced:true, title:"バランスが安定しています", text:"本来のカパのエネルギーが安定しています。安定感と穏やかさを保てており、本質に沿った生活ができています。"},
+  'A-B': {balanced:false, title:"ピッタが過剰に乗っています", text:"本来ヴァータ体質のあなたに、現在ピッタ（火）が過剰です。熱感・炎症・イライラが出やすく、やりすぎや追い込みすぎのサインかもしれません。冷ましてリセットする時間が必要です。"},
+  'A-C': {balanced:false, title:"カパの停滞が増しています", text:"本来ヴァータ体質のあなたに、現在カパ（重さ・停滞）が増しています。だるさ・むくみ・やる気の低下が気になっていませんか？動くことと温めることがカギです。"},
+  'B-A': {balanced:false, title:"ヴァータの不安定さが入っています", text:"本来ピッタ体質のあなたに、現在ヴァータ（風・不安定）が過剰です。落ち着かない・眠れない・不安が続いているなら、根を張る時間と安定した習慣が必要なサインです。"},
+  'B-C': {balanced:false, title:"カパの停滞が入っています", text:"本来ピッタ体質のあなたに、現在カパ（停滞）が増しています。本来の推進力や明晰さが出にくくなっていませんか？変化と動くエネルギーが必要なタイミングです。"},
+  'C-A': {balanced:false, title:"ヴァータの乱れが入っています", text:"本来カパ体質のあなたに、現在ヴァータ（風・乾燥・不規則）が入り込んでいます。慣れないペースで疲れていたり、不規則な生活が続いていませんか？温めて安定させるケアが大切です。"},
+  'C-B': {balanced:false, title:"ピッタの熱が過剰です", text:"本来カパ体質のあなたに、現在ピッタ（熱）が過剰です。本来の穏やかさを超えて、焦り・炎症・過剰な刺激を抱えているかもしれません。冷やして静める時間を意識してください。"},
+};
+
+const DOSHA_DETAIL = {
+  A: {
+    label:"VATA", jp:"風・空のエネルギー",
+    rows:[
+      {l:"定義・本質", ay:"「風」と「空」のエネルギー。軽・冷・乾・粗・動・速・不規則。", we:"【神経系・循環系・伝達系】細胞の活動、神経インパルス、輸送、排泄、呼吸の動きを司る。"},
+      {l:"体格・外見", ay:"痩せ型、身長は極端（高or低）、手足が冷たい。乾燥肌、血管が浮き出る、歯並びが不揃い。", we:"代謝が不安定で、脂肪や筋肉（同化作用）がつきにくい状態。末梢循環が弱い。"},
+      {l:"消化・食欲", ay:"不規則（ムラがある）。便秘やガス溜まりを起こしやすい。", we:"消化管運動（蠕動運動）の不規則性。"},
+      {l:"性格・精神", ay:"創造的、理解が早いが忘れるのも早い。活発、早口、順応性が高い。お金は衝動的。", we:"脳の可塑性が高い（切り替えが早い）。思考のジャンプが起きやすい。"},
+      {l:"睡眠・脈", ay:"眠りが浅い、不眠傾向、歯ぎしり。脈：蛇の脈（速くて弱く、不規則）。", we:"交感神経優位になりやすく、リラックス（副交感神経）への切り替えが苦手。"},
+      {l:"不調のサイン", ay:"不安、恐怖、心配性、過活動。", we:"【自律神経の乱れ】交感神経の空回り、過緊張状態。"},
+    ]
+  },
+  B: {
+    label:"PITTA", jp:"火・水のエネルギー",
+    rows:[
+      {l:"定義・本質", ay:"「火」と「水」のエネルギー。熱・鋭・軽・液・微・酸。", we:"【代謝系・内分泌系・酵素】消化吸収、体温産生（ATP）、ホルモン変換、視覚的認知を司る。"},
+      {l:"体格・外見", ay:"中肉中背、標準的な体型。ほくろ・そばかす多、日焼けしやすい、暑がり、汗っかき。鋭い目つき。", we:"基礎代謝が高く、熱産生が活発。皮膚のメラニン反応や血管拡張が起きやすい。"},
+      {l:"消化・食欲", ay:"旺盛（強い）。空腹に耐えられない（イライラ）。軟便・下痢気味になりやすい。", we:"胃酸や消化酵素の分泌が過剰になりやすい。胃結腸反射が強い。"},
+      {l:"性格・精神", ay:"知的、リーダーシップ、情熱的。完璧主義、批判的になりやすい。お金は高級品や見栄に使う。", we:"前頭葉（実行機能）の働きが強い。目標達成へのドライブ（ドーパミン系）が強い。"},
+      {l:"睡眠・脈", ay:"短くても熟睡できる。戦いや火事の夢。脈：カエルの脈（力強く、跳ねる）。", we:"オフにするのは上手だが、興奮状態が続くと過熱する。"},
+      {l:"不調のサイン", ay:"怒り、イライラ、嫉妬、批判。皮膚の赤み、炎症。", we:"【炎症反応（サイトカインストーム）】体内の「火事」が止まらない状態。"},
+    ]
+  },
+  C: {
+    label:"KAPHA", jp:"水・地のエネルギー",
+    rows:[
+      {l:"定義・本質", ay:"「水」と「地」のエネルギー。重・冷・遅・油・粘・緩。", we:"【免疫系・構造系・同化作用】細胞膜の形成、脂肪組織、粘膜保護、免疫バリア、成長を司る。"},
+      {l:"体格・外見", ay:"ガッチリ・ふくよか。骨太。髪が多くて太い。色白で湿った肌。動作や話し方がゆっくり。", we:"同化作用が優位。エネルギーを貯蔵する能力が高い。副交感神経が優位で省エネ体質。"},
+      {l:"消化・食欲", ay:"遅い（安定している）。食欲は少ないが太りやすい（水を飲んでも太る）。", we:"基礎代謝が低く、消化管の動きも緩やか。インスリン感受性の問題が出やすい。"},
+      {l:"性格・精神", ay:"穏やか、忍耐強い、慈愛、献身的。覚えは遅いが忘れない。貯金、執着しやすい。", we:"セロトニン・オキシトシン系が安定。変化を嫌い、恒常性（ホメオスタシス）を保つ力が強い。"},
+      {l:"睡眠・脈", ay:"長く深く眠る。起きるのが辛い。脈：白鳥の脈（ゆっくり、太く、うねる）。", we:"副交感神経が過剰になりやすく、覚醒レベルが低い。"},
+      {l:"不調のサイン", ay:"執着、鬱（停滞型）、強欲、怠惰。肥満、浮腫、アレルギー（鼻炎）。", we:"【代謝不全・停滞】リンパや水分のうっ滞、エネルギーの過剰蓄積。"},
+    ]
+  },
+};
+
+let activeTab = null;
+
+function renderTabs(){
+  const tabsEl = document.getElementById('tabs');
+  tabsEl.innerHTML = ['A','B','C'].map(k => `
+    <div class="tab" data-k="${k}">
+      ${DOSHA_DETAIL[k].label}
+      <span class="tab-jp">${DOSHA_DETAIL[k].jp}</span>
+      <span class="tab-badge">${k}</span>
+    </div>
+  `).join('');
+  tabsEl.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', () => showDoshaDetail(t.dataset.k));
+  });
+}
+
+function showDoshaDetail(key){
+  activeTab = key;
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.k === key);
+  });
+  const d = DOSHA_DETAIL[key];
+  document.getElementById('dosha-panel').innerHTML = `
+    <div class="dosha-head">
+      <p class="name">${d.label}<span class="tab-badge" style="margin-left:8px">${key}</span></p>
+      <p class="kw">${d.jp}</p>
+    </div>
+    ${d.rows.map((r,i) => `
+      <div class="dosha-row">
+        <div class="rl">${r.l}</div>
+        <div>${i===0?'<p class="col-head">アーユルヴェーダ的特徴</p>':''}${r.ay}</div>
+        <div class="west">${i===0?'<p class="col-head">西洋医学的・生理学的解釈</p>':''}${r.we}</div>
+      </div>
+    `).join('')}
+  `;
+}
+
+renderTabs();
+
+function renderQuestions(data, prefix, containerId){
+  const el = document.getElementById(containerId);
+  data.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <p class="q-label">${item.q}</p>
+      <div class="options">
+        ${['a','b','c'].map(k => `
+          <label class="opt" data-k="${k.toUpperCase()}">
+            <input type="radio" name="${prefix}${i}" value="${k.toUpperCase()}">
+            <span class="opt-body">
+              <span class="opt-tag">${k.toUpperCase()}</span>
+              <span>${item[k]}</span>
+            </span>
+          </label>
+        `).join('')}
+      </div>
+    `;
+    el.appendChild(card);
+  });
+}
+
+renderQuestions(DATA_PRAKRITI, 'p', 'quiz-prakriti');
+renderQuestions(DATA_VIKRITI, 'v', 'quiz-vikriti');
+
+function getDominant(counts){
+  const sorted = Object.entries(counts).sort((x,y) => y[1]-x[1]);
+  if(sorted[0][1] === 0) return null;
+  if(sorted[0][1] === sorted[1][1]) return 'TIE';
+  return sorted[0][0];
+}
+
+function tally(){
+  const pC = {A:0,B:0,C:0};
+  const vC = {A:0,B:0,C:0};
+  let pAns = 0, vAns = 0;
+
+  DATA_PRAKRITI.forEach((_,i) => {
+    const el = document.querySelector(`input[name="p${i}"]:checked`);
+    if(el){ pC[el.value]++; pAns++; }
+  });
+  DATA_VIKRITI.forEach((_,i) => {
+    const el = document.querySelector(`input[name="v${i}"]:checked`);
+    if(el){ vC[el.value]++; vAns++; }
+  });
+
+  const pFull = DATA_PRAKRITI.length;
+  const vFull = DATA_VIKRITI.length;
+
+  // Update tally bars (proportional to answered)
+  ['a','b','c'].forEach(k => {
+    const K = k.toUpperCase();
+    document.getElementById(`p-bar-${k}`).style.width = (pAns ? pC[K]/pAns*100 : 0) + '%';
+    document.getElementById(`v-bar-${k}`).style.width = (vAns ? vC[K]/vAns*100 : 0) + '%';
+  });
+  document.getElementById('p-count').textContent = `${pAns} / ${pFull}`;
+  document.getElementById('v-count').textContent = `${vAns} / ${vFull}`;
+
+  const allDone = pAns === pFull && vAns === vFull;
+  const resultEl = document.getElementById('result');
+  const detailEl = document.getElementById('detail');
+
+  if(allDone){
+    const pKey = getDominant(pC);
+    const vKey = getDominant(vC);
+    const pInfo = DOSHA_INFO[pKey] || DOSHA_INFO.TIE;
+    const vInfo = DOSHA_INFO[vKey] || DOSHA_INFO.TIE;
+
+    // Fill result cards
+    document.getElementById('p-name').textContent = pInfo.name;
+    document.getElementById('p-name').style.color = pInfo.color;
+    document.getElementById('p-sub').textContent = pInfo.sub;
+    document.getElementById('p-score').textContent = `A:${pC.A} / B:${pC.B} / C:${pC.C}`;
+    document.querySelector('.prakriti-card').style.borderColor = pInfo.color;
+
+    document.getElementById('v-name').textContent = vInfo.name;
+    document.getElementById('v-name').style.color = vInfo.color;
+    document.getElementById('v-sub').textContent = vInfo.sub;
+    document.getElementById('v-score').textContent = `A:${vC.A} / B:${vC.B} / C:${vC.C}`;
+    document.querySelector('.vikriti-card').style.borderColor = vInfo.color;
+
+    // Gap analysis
+    const gapCard = document.getElementById('gap-card');
+    let gap = null;
+    if(pKey && pKey !== 'TIE' && vKey && vKey !== 'TIE'){
+      gap = GAP_DATA[`${pKey}-${vKey}`];
+    }
+    if(gap){
+      document.getElementById('gap-title').textContent = gap.title;
+      document.getElementById('gap-text').textContent = gap.text;
+      if(gap.balanced){
+        gapCard.style.background = '#EEF4E8';
+        gapCard.style.borderColor = '#7AA06A';
+      } else {
+        gapCard.style.background = '#FAF5E8';
+        gapCard.style.borderColor = '#C49A3A';
+      }
+    } else {
+      document.getElementById('gap-title').textContent = "複合的な体質のため、個別分析が有効です";
+      document.getElementById('gap-text').textContent = "複数のドーシャが均衡しているため、スコアだけでは断言しにくい体質です。カウンセリングでより詳しくお伝えすることができます。";
+      gapCard.style.background = '';
+      gapCard.style.borderColor = '';
+    }
+
+    resultEl.classList.add('show');
+    detailEl.classList.add('show');
+    if(!activeTab || !detailEl.dataset.autoSet){
+      showDoshaDetail(pKey && pKey !== 'TIE' ? pKey : 'A');
+      detailEl.dataset.autoSet = "1";
+    }
+    resultEl.scrollIntoView({behavior:'smooth', block:'start'});
+  } else {
+    resultEl.classList.remove('show');
+    detailEl.classList.remove('show');
+    detailEl.dataset.autoSet = "";
+  }
+}
+
+document.getElementById('quiz-prakriti').addEventListener('change', tally);
+document.getElementById('quiz-vikriti').addEventListener('change', tally);
+document.getElementById('reset').addEventListener('click', () => {
+  document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+  activeTab = null;
+  tally();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+tally();
+</script>
+</body>
+</html>
