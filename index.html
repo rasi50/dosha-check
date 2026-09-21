@@ -187,19 +187,13 @@
   /* result */
   .result{margin-top:36px;display:none;}
   .result.show{display:block;}
-  .result-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    margin-bottom:14px;
-  }
-  @media (max-width:500px){.result-grid{grid-template-columns:1fr;}}
-  .result-card{
+  .result-head{
     background:var(--panel);
     border:2px solid var(--line);
     border-radius:14px;
-    padding:18px 16px;
+    padding:20px 16px;
     text-align:center;
+    margin-bottom:12px;
     transition:border-color .3s;
   }
   .result-tag{
@@ -210,18 +204,71 @@
     border-radius:10px;
     margin-bottom:10px;
     letter-spacing:.04em;
+    background:#EAE5D8;color:#5B4F3A;
   }
-  .prakriti-card .result-tag{background:#EAE5D8;color:#5B4F3A;}
-  .vikriti-card .result-tag{background:#D9E8DA;color:#2A5433;}
   .result-dosha{
     font-family:'Shippori Mincho', serif;
-    font-size:20px;
+    font-size:24px;
     font-weight:700;
     margin:0 0 4px;
     transition:color .3s;
   }
-  .result-dosha-sub{font-size:12px;color:var(--ink-soft);margin:0 0 8px;}
-  .result-score{font-size:12px;color:var(--ink-soft);}
+  .result-dosha-sub{font-size:12.5px;color:var(--ink-soft);}
+
+  /* comparison table */
+  .compare-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 18px;
+    margin-bottom:12px;
+  }
+  .compare-caption{
+    font-size:11.5px;
+    color:var(--ink-soft);
+    text-align:center;
+    margin-bottom:10px;
+  }
+  .compare-row{
+    display:grid;
+    grid-template-columns:5.5em 1fr 1fr 4.2em;
+    align-items:center;
+    gap:6px;
+    padding:9px 0;
+    border-bottom:1px solid var(--line);
+    font-size:13px;
+  }
+  .compare-row:last-child{border-bottom:none;}
+  .compare-head{
+    font-size:10.5px;
+    color:var(--ink-soft);
+    padding:0 0 6px;
+    border-bottom:1px solid var(--line);
+  }
+  .compare-head span{text-align:center;}
+  .compare-head span:first-child{text-align:left;}
+  .cmp-name{font-weight:500;}
+  .cmp-val{
+    text-align:center;
+    font-variant-numeric:tabular-nums;
+    color:var(--ink-soft);
+  }
+  .cmp-val.now{color:var(--ink);font-weight:500;}
+  .cmp-delta{
+    text-align:right;
+    font-size:11.5px;
+    font-variant-numeric:tabular-nums;
+    font-weight:700;
+  }
+  .cmp-delta.up{color:#B8552E;}
+  .cmp-delta.down{color:#7B8794;}
+  .cmp-delta.flat{color:var(--ink-soft);font-weight:400;}
+  .compare-row.rising{
+    background:#FAF5E8;
+    margin:0 -18px;
+    padding-left:18px;
+    padding-right:18px;
+  }
 
   /* gap card */
   .gap-card{
@@ -317,16 +364,16 @@
   <p class="sub">アーユルヴェーダ 2軸診断</p>
 
   <div class="intro-box">
-    このチェックでは2つの視点を分けて診断します。
+    2つの視点に分けて診断します。
     <div class="intro-row">
       <span class="intro-badge badge-p">プラクリティ</span>
-      <span>子どもの頃から変わらない身体の特徴 → <strong>本来の体質</strong></span>
+      <span>生まれつきの身体の特徴から読む <strong>本来の体質</strong></span>
     </div>
     <div class="intro-row">
       <span class="intro-badge badge-v">ヴィクリティ</span>
-      <span>最近1ヶ月の状態 → <strong>今のバランス</strong></span>
+      <span>ここ1ヶ月の状態から読む <strong>今の傾き</strong></span>
     </div>
-    その差分から、今の乱れと必要なケアが見えてきます。
+    この2つの差から、今どのドーシャが増えているかが見えてきます。
   </div>
 
   <div class="tally">
@@ -356,7 +403,7 @@
       <div class="section-title">
         <span class="intro-badge badge-p" style="margin-right:6px">プラクリティ</span>身体の特徴
       </div>
-      <p class="section-note">子どもの頃から変わらない特徴、または生まれつきの傾向で選んでください</p>
+      <p class="section-note">子どもの頃から今まで変わらない、生まれつきの特徴で選んでください</p>
     </div>
   </div>
 
@@ -366,26 +413,29 @@
       <div class="section-title">
         <span class="intro-badge badge-v" style="margin-right:6px">ヴィクリティ</span>行動と生理機能
       </div>
-      <p class="section-note">最近1ヶ月の状態で、最も当てはまるものを選んでください</p>
+      <p class="section-note">ここ1ヶ月の状態で、いちばん近いものを選んでください</p>
     </div>
   </div>
 
   <!-- Result -->
   <div class="result" id="result">
-    <div class="result-grid">
-      <div class="result-card prakriti-card">
-        <div class="result-tag">本来の体質（プラクリティ）</div>
-        <div class="result-dosha" id="p-name">—</div>
-        <div class="result-dosha-sub" id="p-sub"></div>
-        <div class="result-score" id="p-score"></div>
-      </div>
-      <div class="result-card vikriti-card">
-        <div class="result-tag">今の状態（ヴィクリティ）</div>
-        <div class="result-dosha" id="v-name">—</div>
-        <div class="result-dosha-sub" id="v-sub"></div>
-        <div class="result-score" id="v-score"></div>
-      </div>
+    <div class="result-head">
+      <div class="result-tag">本来の体質（プラクリティ）</div>
+      <div class="result-dosha" id="p-name">—</div>
+      <div class="result-dosha-sub" id="p-sub"></div>
     </div>
+
+    <div class="compare-card">
+      <div class="compare-caption">本来の体質と、ここ1ヶ月の比較</div>
+      <div class="compare-row compare-head">
+        <span></span>
+        <span>本来</span>
+        <span>ここ1ヶ月</span>
+        <span></span>
+      </div>
+      <div id="compare-rows"></div>
+    </div>
+
     <div class="gap-card" id="gap-card">
       <p class="gap-title" id="gap-title"></p>
       <p class="gap-text" id="gap-text"></p>
@@ -430,23 +480,30 @@ const DATA_VIKRITI = [
 ];
 
 const DOSHA_INFO = {
-  A: {name:"Vata（ヴァータ）", sub:"風・空のエネルギー", color:"var(--a)"},
-  B: {name:"Pitta（ピッタ）", sub:"火・水のエネルギー", color:"var(--b)"},
-  C: {name:"Kapha（カパ）", sub:"水・地のエネルギー", color:"var(--c)"},
-  TIE: {name:"複合タイプ", sub:"複数のドーシャが均衡", color:"var(--ink-soft)"},
+  A: {name:"ヴァータ", full:"Vata（ヴァータ）", sub:"風・空のエネルギー", color:"var(--a)"},
+  B: {name:"ピッタ", full:"Pitta（ピッタ）", sub:"火・水のエネルギー", color:"var(--b)"},
+  C: {name:"カパ", full:"Kapha（カパ）", sub:"水・地のエネルギー", color:"var(--c)"},
 };
 
-const GAP_DATA = {
-  'A-A': {balanced:true, title:"バランスが安定しています", text:"本来のヴァータのエネルギーが安定しています。身体の特徴と現在の状態が一致しており、本質に沿った生活ができています。"},
-  'B-B': {balanced:true, title:"バランスが安定しています", text:"本来のピッタのエネルギーが安定しています。熱と集中力を活かしながら、適切なペースで過ごせている状態です。"},
-  'C-C': {balanced:true, title:"バランスが安定しています", text:"本来のカパのエネルギーが安定しています。安定感と穏やかさを保てており、本質に沿った生活ができています。"},
-  'A-B': {balanced:false, title:"ピッタが過剰に乗っています", text:"本来ヴァータ体質のあなたに、現在ピッタ（火）が過剰です。熱感・炎症・イライラが出やすく、やりすぎや追い込みすぎのサインかもしれません。冷ましてリセットする時間が必要です。"},
-  'A-C': {balanced:false, title:"カパの停滞が増しています", text:"本来ヴァータ体質のあなたに、現在カパ（重さ・停滞）が増しています。だるさ・むくみ・やる気の低下が気になっていませんか？動くことと温めることがカギです。"},
-  'B-A': {balanced:false, title:"ヴァータの不安定さが入っています", text:"本来ピッタ体質のあなたに、現在ヴァータ（風・不安定）が過剰です。落ち着かない・眠れない・不安が続いているなら、根を張る時間と安定した習慣が必要なサインです。"},
-  'B-C': {balanced:false, title:"カパの停滞が入っています", text:"本来ピッタ体質のあなたに、現在カパ（停滞）が増しています。本来の推進力や明晰さが出にくくなっていませんか？変化と動くエネルギーが必要なタイミングです。"},
-  'C-A': {balanced:false, title:"ヴァータの乱れが入っています", text:"本来カパ体質のあなたに、現在ヴァータ（風・乾燥・不規則）が入り込んでいます。慣れないペースで疲れていたり、不規則な生活が続いていませんか？温めて安定させるケアが大切です。"},
-  'C-B': {balanced:false, title:"ピッタの熱が過剰です", text:"本来カパ体質のあなたに、現在ピッタ（熱）が過剰です。本来の穏やかさを超えて、焦り・炎症・過剰な刺激を抱えているかもしれません。冷やして静める時間を意識してください。"},
+const RISE_INFO = {
+  A: {
+    signs:"眠りが浅い、考えがまとまらない、便通が不規則、手足が冷える、気持ちが落ち着かない",
+    care:"温めること、決まった時間に食べて眠ること",
+  },
+  B: {
+    signs:"イライラしやすい、のぼせる、肌が赤くなる、胃が重い、頑張りすぎて止まれない",
+    care:"熱をためこまないこと、予定を詰め込みすぎないこと",
+  },
+  C: {
+    signs:"だるさが抜けない、むくむ、体が重い、やる気が出ない、動くのがおっくう",
+    care:"体を動かすこと、朝と食事を軽くすること",
+  },
 };
+
+// ヴィクリティ＝「本来の比率からどれだけ増えたか」。
+// 同じドーシャがさらに増える同質増悪が最も多い乱れ方なので、
+// 優勢ドーシャ同士の比較ではなく比率の差分で判定する。
+const RISE_THRESHOLD = 15; // ポイント（設問1〜1.5問ぶん）
 
 const DOSHA_DETAIL = {
   A: {
@@ -549,11 +606,20 @@ function renderQuestions(data, prefix, containerId){
 renderQuestions(DATA_PRAKRITI, 'p', 'quiz-prakriti');
 renderQuestions(DATA_VIKRITI, 'v', 'quiz-vikriti');
 
-function getDominant(counts){
-  const sorted = Object.entries(counts).sort((x,y) => y[1]-x[1]);
-  if(sorted[0][1] === 0) return null;
-  if(sorted[0][1] === sorted[1][1]) return 'TIE';
-  return sorted[0][0];
+function getDominantKeys(counts){
+  const max = Math.max(counts.A, counts.B, counts.C);
+  if(max === 0) return [];
+  return ['A','B','C'].filter(k => counts[k] === max);
+}
+
+function prakritiLabel(keys){
+  if(keys.length === 1) return DOSHA_INFO[keys[0]].full;
+  return keys.map(k => DOSHA_INFO[k].name).join('・') + '　複合体質';
+}
+
+function prakritiSub(keys){
+  if(keys.length === 1) return DOSHA_INFO[keys[0]].sub;
+  return '2つの性質を併せ持つ体質です';
 }
 
 function tally(){
@@ -587,51 +653,69 @@ function tally(){
   const detailEl = document.getElementById('detail');
 
   if(allDone){
-    const pKey = getDominant(pC);
-    const vKey = getDominant(vC);
-    const pInfo = DOSHA_INFO[pKey] || DOSHA_INFO.TIE;
-    const vInfo = DOSHA_INFO[vKey] || DOSHA_INFO.TIE;
+    const pKeys = getDominantKeys(pC);
+    const headEl = document.getElementById('p-name');
+    headEl.textContent = prakritiLabel(pKeys);
+    headEl.style.color = pKeys.length === 1 ? DOSHA_INFO[pKeys[0]].color : 'var(--ink)';
+    document.getElementById('p-sub').textContent = prakritiSub(pKeys);
+    document.querySelector('.result-head').style.borderColor =
+      pKeys.length === 1 ? DOSHA_INFO[pKeys[0]].color : 'var(--line)';
 
-    // Fill result cards
-    document.getElementById('p-name').textContent = pInfo.name;
-    document.getElementById('p-name').style.color = pInfo.color;
-    document.getElementById('p-sub').textContent = pInfo.sub;
-    document.getElementById('p-score').textContent = `A:${pC.A} / B:${pC.B} / C:${pC.C}`;
-    document.querySelector('.prakriti-card').style.borderColor = pInfo.color;
+    // 設問数が違う（9問 / 11問）ので比率に正規化してから差分を取る
+    const pPct = {}, vPct = {}, delta = {};
+    ['A','B','C'].forEach(k => {
+      pPct[k] = Math.round(pC[k] / pFull * 100);
+      vPct[k] = Math.round(vC[k] / vFull * 100);
+      delta[k] = vPct[k] - pPct[k];
+    });
 
-    document.getElementById('v-name').textContent = vInfo.name;
-    document.getElementById('v-name').style.color = vInfo.color;
-    document.getElementById('v-sub').textContent = vInfo.sub;
-    document.getElementById('v-score').textContent = `A:${vC.A} / B:${vC.B} / C:${vC.C}`;
-    document.querySelector('.vikriti-card').style.borderColor = vInfo.color;
+    const maxDelta = Math.max(delta.A, delta.B, delta.C);
+    const riseKey = maxDelta >= RISE_THRESHOLD
+      ? ['A','B','C'].find(k => delta[k] === maxDelta)
+      : null;
 
-    // Gap analysis
+    document.getElementById('compare-rows').innerHTML = ['A','B','C'].map(k => {
+      const d = delta[k];
+      const cls = d > 0 ? 'up' : (d < 0 ? 'down' : 'flat');
+      const sign = d > 0 ? '+' : (d < 0 ? '−' : '±');
+      return `
+        <div class="compare-row${k === riseKey ? ' rising' : ''}">
+          <span class="cmp-name" style="color:${DOSHA_INFO[k].color}">${DOSHA_INFO[k].name}</span>
+          <span class="cmp-val">${pPct[k]}%</span>
+          <span class="cmp-val now">${vPct[k]}%</span>
+          <span class="cmp-delta ${cls}">${sign}${Math.abs(d)}</span>
+        </div>`;
+    }).join('');
+
     const gapCard = document.getElementById('gap-card');
-    let gap = null;
-    if(pKey && pKey !== 'TIE' && vKey && vKey !== 'TIE'){
-      gap = GAP_DATA[`${pKey}-${vKey}`];
-    }
-    if(gap){
-      document.getElementById('gap-title').textContent = gap.title;
-      document.getElementById('gap-text').textContent = gap.text;
-      if(gap.balanced){
-        gapCard.style.background = '#EEF4E8';
-        gapCard.style.borderColor = '#7AA06A';
-      } else {
-        gapCard.style.background = '#FAF5E8';
-        gapCard.style.borderColor = '#C49A3A';
-      }
+    const titleEl = document.getElementById('gap-title');
+    const textEl = document.getElementById('gap-text');
+
+    if(!riseKey){
+      titleEl.textContent = "本来のバランスを保てています";
+      textEl.textContent = `身体の特徴から見た本来の体質と、ここ1ヶ月の状態に大きなズレはありません。${prakritiLabel(pKeys).replace(/　複合体質/,'')}の性質が、乱れずに素直に出ている状態です。`;
+      gapCard.style.background = '#EEF4E8';
+      gapCard.style.borderColor = '#7AA06A';
     } else {
-      document.getElementById('gap-title').textContent = "複合的な体質のため、個別分析が有効です";
-      document.getElementById('gap-text').textContent = "複数のドーシャが均衡しているため、スコアだけでは断言しにくい体質です。カウンセリングでより詳しくお伝えすることができます。";
-      gapCard.style.background = '';
-      gapCard.style.borderColor = '';
+      const rise = DOSHA_INFO[riseKey].name;
+      const info = RISE_INFO[riseKey];
+      const isSame = pKeys.includes(riseKey);
+      if(isSame){
+        titleEl.textContent = `${rise}が強まりすぎています`;
+        textEl.textContent = `もともと${rise}の性質が強いあなたは、その性質がさらに増えやすい傾向があります。ここ1ヶ月はまさにその状態です。${info.signs}——こうしたサインは出ていませんか。${info.care}が、本来のバランスに戻る近道です。`;
+      } else {
+        const base = pKeys.map(k => DOSHA_INFO[k].name).join('・');
+        titleEl.textContent = `${rise}が増えています`;
+        textEl.textContent = `本来は${base}の体質ですが、ここ1ヶ月は${rise}が優勢になっています。${info.signs}——こうしたサインは出ていませんか。${info.care}を意識すると、本来の${base}のバランスに戻りやすくなります。`;
+      }
+      gapCard.style.background = '#FAF5E8';
+      gapCard.style.borderColor = '#C49A3A';
     }
 
     resultEl.classList.add('show');
     detailEl.classList.add('show');
     if(!activeTab || !detailEl.dataset.autoSet){
-      showDoshaDetail(pKey && pKey !== 'TIE' ? pKey : 'A');
+      showDoshaDetail(riseKey || pKeys[0] || 'A');
       detailEl.dataset.autoSet = "1";
     }
     resultEl.scrollIntoView({behavior:'smooth', block:'start'});
