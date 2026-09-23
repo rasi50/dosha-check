@@ -14,6 +14,7 @@
     --ink: #2E2A22;
     --ink-soft: #6B6558;
     --line: #DEDACB;
+    --accent: #7B6A4E;
     --a: #57677F;
     --a-bg: #E7EBF1;
     --b: #B8552E;
@@ -30,7 +31,11 @@
     line-height:1.7;
     padding:32px 16px 80px;
   }
-  .wrap{max-width:760px;margin:0 auto;}
+  .wrap{max-width:720px;margin:0 auto;}
+
+  /* steps */
+  .step{display:none;}
+  .step.active{display:block;}
 
   .site-badge{
     text-align:center;
@@ -42,96 +47,157 @@
   h1{
     font-family:'Shippori Mincho', serif;
     font-weight:700;
-    font-size:clamp(22px,4vw,32px);
+    font-size:clamp(22px,4.4vw,32px);
     text-align:center;
     letter-spacing:.08em;
-    margin:0 0 4px;
+    margin:0 0 6px;
   }
   .sub{
     text-align:center;
     color:var(--ink-soft);
     font-size:13px;
-    margin:0 0 18px;
+    margin:0 0 24px;
   }
+
+  /* intro */
   .intro-box{
     background:var(--panel);
     border:1px solid var(--line);
-    border-radius:12px;
-    padding:14px 18px;
-    margin-bottom:28px;
-    font-size:13px;
+    border-radius:14px;
+    padding:20px 22px;
+    margin-bottom:22px;
+    font-size:13.5px;
     color:var(--ink-soft);
-    line-height:1.85;
+    line-height:1.9;
   }
   .intro-box strong{color:var(--ink);}
-  .intro-row{display:flex;gap:10px;align-items:baseline;margin:4px 0;}
-  .intro-badge{
+  .intro-step{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .intro-step:last-of-type{border-bottom:none;padding-bottom:4px;}
+  .intro-num{
     flex-shrink:0;
+    width:24px;height:24px;
+    border-radius:50%;
+    background:var(--accent);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+    margin-top:2px;
+  }
+  .intro-step-body strong{display:block;color:var(--ink);font-size:14px;}
+  .intro-lead{margin:0 0 4px;}
+  .intro-close{margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line);}
+
+  /* buttons */
+  .btn{
+    display:block;
+    width:100%;
+    max-width:380px;
+    margin:24px auto 0;
+    padding:16px 24px;
+    border:none;
+    border-radius:10px;
+    background:var(--accent);
+    color:#fff;
+    font-family:'Noto Sans JP', sans-serif;
+    font-size:15px;
+    font-weight:500;
+    letter-spacing:.04em;
+    cursor:pointer;
+    box-shadow:0 2px 8px rgba(46,42,34,.12);
+    transition:opacity .2s, background .2s;
+  }
+  .btn:hover{opacity:.9;}
+  .btn:disabled{
+    background:var(--line);
+    color:var(--ink-soft);
+    cursor:not-allowed;
+    box-shadow:none;
+  }
+  .btn-sub{
+    display:block;
+    margin:14px auto 0;
+    background:none;
+    border:none;
+    color:var(--ink-soft);
+    font-size:13px;
+    font-family:'Noto Sans JP', sans-serif;
+    cursor:pointer;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .btn-sub:hover{color:var(--ink);}
+
+  /* stage header */
+  .stage-head{margin-bottom:6px;}
+  .stage-badge{
+    display:inline-block;
     font-size:10.5px;
     font-weight:700;
-    padding:2px 8px;
+    padding:3px 10px;
     border-radius:5px;
-    letter-spacing:.05em;
+    letter-spacing:.06em;
   }
   .badge-p{background:#EAE5D8;color:#5B4F3A;}
   .badge-v{background:#D9E8DA;color:#2A5433;}
+  .stage-title{
+    font-family:'Shippori Mincho', serif;
+    font-size:clamp(19px,4vw,24px);
+    font-weight:700;
+    margin:10px 0 6px;
+  }
+  .stage-note{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:0 0 20px;
+    line-height:1.85;
+  }
 
-  /* sticky tally */
-  .tally{
+  /* progress */
+  .progress{
     position:sticky;
-    top:12px;
+    top:10px;
     z-index:10;
     background:var(--panel);
     border:1px solid var(--line);
-    border-radius:14px;
-    padding:12px 16px;
-    margin-bottom:28px;
-    box-shadow:0 2px 10px rgba(46,42,34,.06);
-  }
-  .tally-row{
+    border-radius:12px;
+    padding:11px 16px;
+    margin-bottom:22px;
+    box-shadow:0 2px 10px rgba(46,42,34,.07);
     display:flex;
     align-items:center;
-    gap:8px;
-    margin-bottom:7px;
+    gap:10px;
   }
-  .tally-row:last-child{margin-bottom:0;}
-  .tally-lbl{
-    width:80px;
+  .progress-lbl{
+    font-size:11.5px;
+    color:var(--ink-soft);
     flex-shrink:0;
   }
-  .tally-bar{
+  .progress-bar{
     flex:1;
-    height:8px;
-    border-radius:5px;
-    overflow:hidden;
-    display:flex;
+    height:7px;
+    border-radius:4px;
     background:var(--line);
+    overflow:hidden;
   }
-  .tally-bar span{height:100%;transition:width .3s ease;}
-  .tally-count{
-    width:38px;
-    text-align:right;
+  .progress-fill{
+    height:100%;
+    background:var(--accent);
+    width:0%;
+    transition:width .3s ease;
+  }
+  .progress-count{
     font-size:11.5px;
     color:var(--ink-soft);
     font-weight:500;
     flex-shrink:0;
-  }
-
-  /* section headers */
-  .section-header{margin:36px 0 6px;}
-  .section-title{
-    font-family:'Shippori Mincho', serif;
-    font-size:18px;
-    font-weight:500;
-    padding-left:10px;
-    border-left:4px solid var(--ink);
-    margin:0 0 4px;
-  }
-  .section-note{
-    font-size:12px;
-    color:var(--ink-soft);
-    padding-left:14px;
-    margin:0 0 14px;
+    font-variant-numeric:tabular-nums;
   }
 
   /* question cards */
@@ -148,17 +214,22 @@
     margin:0 0 10px;
     font-weight:500;
   }
-  .options{
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr;
-    gap:8px;
+  .q-num{
+    display:inline-block;
+    font-size:11px;
+    color:var(--ink-soft);
+    background:var(--bg);
+    border-radius:4px;
+    padding:1px 7px;
+    margin-right:7px;
+    font-variant-numeric:tabular-nums;
   }
-  @media (max-width:560px){.options{grid-template-columns:1fr;}}
+  .options{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+  @media (max-width:600px){.options{grid-template-columns:1fr;}}
   .opt{position:relative;display:block;}
   .opt input{
     position:absolute;opacity:0;
-    width:100%;height:100%;
-    margin:0;cursor:pointer;
+    width:100%;height:100%;margin:0;cursor:pointer;
   }
   .opt-body{
     display:flex;
@@ -166,9 +237,9 @@
     gap:8px;
     border:1px solid var(--line);
     border-radius:10px;
-    padding:10px 12px;
+    padding:11px 12px;
     font-size:13.5px;
-    min-height:56px;
+    min-height:54px;
     transition:border-color .15s, background .15s;
   }
   .opt-tag{
@@ -184,9 +255,55 @@
   .opt[data-k="C"] input:checked + .opt-body{background:var(--c-bg);}
   .opt input:focus-visible + .opt-body{outline:2px solid var(--ink);outline-offset:1px;}
 
-  /* result */
-  .result{margin-top:36px;display:none;}
-  .result.show{display:block;}
+  /* stage-1 result (the hook) */
+  .reveal{
+    background:var(--panel);
+    border:2px solid var(--line);
+    border-radius:16px;
+    padding:34px 24px;
+    text-align:center;
+    transition:border-color .3s;
+  }
+  .reveal-tag{
+    display:inline-block;
+    font-size:11px;
+    font-weight:700;
+    padding:3px 12px;
+    border-radius:10px;
+    background:#EAE5D8;color:#5B4F3A;
+    margin-bottom:16px;
+    letter-spacing:.05em;
+  }
+  .reveal-name{
+    font-family:'Shippori Mincho', serif;
+    font-size:clamp(28px,7vw,38px);
+    font-weight:700;
+    margin:0 0 6px;
+    letter-spacing:.04em;
+    transition:color .3s;
+  }
+  .reveal-sub{font-size:13px;color:var(--ink-soft);margin:0 0 20px;}
+  .reveal-desc{
+    font-size:14px;
+    color:var(--ink-soft);
+    line-height:1.9;
+    text-align:left;
+    padding:18px 0 0;
+    border-top:1px solid var(--line);
+    margin:0;
+  }
+  .hook{
+    background:#F7F2E4;
+    border:1px solid #DECFA8;
+    border-radius:14px;
+    padding:20px 22px;
+    margin-top:14px;
+    font-size:14px;
+    line-height:1.9;
+  }
+  .hook strong{color:var(--ink);}
+
+  /* final result */
   .result-head{
     background:var(--panel);
     border:2px solid var(--line);
@@ -198,24 +315,18 @@
   }
   .result-tag{
     display:inline-block;
-    font-size:10.5px;
-    font-weight:700;
-    padding:2px 10px;
-    border-radius:10px;
-    margin-bottom:10px;
-    letter-spacing:.04em;
+    font-size:10.5px;font-weight:700;
+    padding:2px 10px;border-radius:10px;
+    margin-bottom:10px;letter-spacing:.04em;
     background:#EAE5D8;color:#5B4F3A;
   }
   .result-dosha{
     font-family:'Shippori Mincho', serif;
-    font-size:24px;
-    font-weight:700;
-    margin:0 0 4px;
-    transition:color .3s;
+    font-size:24px;font-weight:700;
+    margin:0 0 4px;transition:color .3s;
   }
   .result-dosha-sub{font-size:12.5px;color:var(--ink-soft);}
 
-  /* comparison table */
   .compare-card{
     background:var(--panel);
     border:1px solid var(--line);
@@ -224,41 +335,30 @@
     margin-bottom:12px;
   }
   .compare-caption{
-    font-size:11.5px;
-    color:var(--ink-soft);
-    text-align:center;
-    margin-bottom:10px;
+    font-size:11.5px;color:var(--ink-soft);
+    text-align:center;margin-bottom:10px;
   }
   .compare-row{
     display:grid;
     grid-template-columns:5.5em 1fr 1fr 4.2em;
-    align-items:center;
-    gap:6px;
+    align-items:center;gap:6px;
     padding:9px 0;
     border-bottom:1px solid var(--line);
     font-size:13px;
   }
   .compare-row:last-child{border-bottom:none;}
   .compare-head{
-    font-size:10.5px;
-    color:var(--ink-soft);
-    padding:0 0 6px;
-    border-bottom:1px solid var(--line);
+    font-size:10.5px;color:var(--ink-soft);
+    padding:0 0 6px;border-bottom:1px solid var(--line);
   }
   .compare-head span{text-align:center;}
   .compare-head span:first-child{text-align:left;}
   .cmp-name{font-weight:500;}
-  .cmp-val{
-    text-align:center;
-    font-variant-numeric:tabular-nums;
-    color:var(--ink-soft);
-  }
+  .cmp-val{text-align:center;font-variant-numeric:tabular-nums;color:var(--ink-soft);}
   .cmp-val.now{color:var(--ink);font-weight:500;}
   .cmp-delta{
-    text-align:right;
-    font-size:11.5px;
-    font-variant-numeric:tabular-nums;
-    font-weight:700;
+    text-align:right;font-size:11.5px;
+    font-variant-numeric:tabular-nums;font-weight:700;
   }
   .cmp-delta.up{color:#B8552E;}
   .cmp-delta.down{color:#7B8794;}
@@ -266,11 +366,9 @@
   .compare-row.rising{
     background:#FAF5E8;
     margin:0 -18px;
-    padding-left:18px;
-    padding-right:18px;
+    padding-left:18px;padding-right:18px;
   }
 
-  /* gap card */
   .gap-card{
     background:var(--panel);
     border:1px solid var(--line);
@@ -281,15 +379,12 @@
   }
   .gap-title{
     font-family:'Shippori Mincho', serif;
-    font-size:16px;
-    font-weight:700;
-    margin:0 0 8px;
+    font-size:17px;font-weight:700;margin:0 0 8px;
   }
-  .gap-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.85;}
+  .gap-text{font-size:14px;color:var(--ink-soft);margin:0;line-height:1.9;}
 
   /* dosha explorer */
-  .detail{margin-top:40px;display:none;}
-  .detail.show{display:block;}
+  .detail{margin-top:34px;}
   .detail-title{
     font-family:'Shippori Mincho', serif;
     font-size:17px;text-align:center;margin:0 0 14px;
@@ -301,8 +396,7 @@
     border:1px solid var(--line);background:var(--panel);
     cursor:pointer;
     font-family:'Shippori Mincho', serif;
-    font-size:15px;font-weight:500;
-    color:var(--ink-soft);
+    font-size:15px;font-weight:500;color:var(--ink-soft);
     transition:border-color .15s, background .15s, color .15s;
   }
   .tab .tab-jp{
@@ -331,7 +425,7 @@
   .dosha-head .kw{font-size:12.5px;color:var(--ink-soft);margin:4px 0 0;}
   .dosha-row{
     display:grid;grid-template-columns:96px 1fr 1fr;
-    gap:0;border-bottom:1px solid var(--line);
+    border-bottom:1px solid var(--line);
   }
   .dosha-row:last-child{border-bottom:none;}
   .dosha-row > div{padding:14px 16px;font-size:13px;}
@@ -341,115 +435,139 @@
   }
   .dosha-row .col-head{font-size:11px;color:var(--ink-soft);font-weight:500;margin:0 0 4px;}
   .dosha-row .west{border-left:1px solid var(--line);}
-  @media (max-width:560px){
+  @media (max-width:600px){
     .dosha-row{grid-template-columns:1fr;}
     .dosha-row .rl{padding:10px 16px 0;background:none;}
     .dosha-row .west{border-left:none;border-top:1px dashed var(--line);}
   }
-
-  .reset{
-    display:block;margin:28px auto 0;
-    background:none;border:1px solid var(--line);
-    color:var(--ink-soft);font-size:13px;
-    padding:8px 18px;border-radius:20px;cursor:pointer;
-  }
-  .reset:hover{border-color:var(--ink);color:var(--ink);}
 </style>
 </head>
 <body>
 <div class="wrap">
 
+<!-- ===== STEP 1: イントロ ===== -->
+<section class="step active" id="step-intro">
   <p class="site-badge">FUTURE VISION LABO</p>
   <h1>ドーシャ体質チェック</h1>
-  <p class="sub">アーユルヴェーダ 2軸診断</p>
+  <p class="sub">アーユルヴェーダ 2段階診断</p>
 
   <div class="intro-box">
-    2つの視点に分けて診断します。
-    <div class="intro-row">
-      <span class="intro-badge badge-p">プラクリティ</span>
-      <span>生まれつきの身体の特徴から読む <strong>本来の体質</strong></span>
+    <p class="intro-lead">このチェックは<strong>2段階</strong>に分かれています。</p>
+
+    <div class="intro-step">
+      <span class="intro-num">1</span>
+      <span class="intro-step-body">
+        <strong>本来の体質を調べる（全9問）</strong>
+        生まれ持った身体の特徴から、あなたの体質を判定します。
+      </span>
     </div>
-    <div class="intro-row">
-      <span class="intro-badge badge-v">ヴィクリティ</span>
-      <span>ここ1ヶ月の状態から読む <strong>今の傾き</strong></span>
+    <div class="intro-step">
+      <span class="intro-num">2</span>
+      <span class="intro-step-body">
+        <strong>今の状態を調べる（全11問）</strong>
+        ここ1ヶ月の過ごし方から、今どのドーシャが増えているかを見ます。
+      </span>
     </div>
-    この2つの差から、今どのドーシャが増えているかが見えてきます。
+
+    <p class="intro-close">
+      体質そのものは生涯変わりませんが、<strong>今のバランスは日々変化します</strong>。
+      この2つの差を見ることで、今のあなたに必要なケアが分かります。
+    </p>
   </div>
 
-  <div class="tally">
-    <div class="tally-row">
-      <span class="tally-lbl"><span class="intro-badge badge-p" style="font-size:10px">本質</span></span>
-      <div class="tally-bar">
-        <span id="p-bar-a" style="background:var(--a);width:0%"></span>
-        <span id="p-bar-b" style="background:var(--b);width:0%"></span>
-        <span id="p-bar-c" style="background:var(--c);width:0%"></span>
-      </div>
-      <span class="tally-count" id="p-count">0 / 9</span>
-    </div>
-    <div class="tally-row">
-      <span class="tally-lbl"><span class="intro-badge badge-v" style="font-size:10px">現在</span></span>
-      <div class="tally-bar">
-        <span id="v-bar-a" style="background:var(--a);width:0%"></span>
-        <span id="v-bar-b" style="background:var(--b);width:0%"></span>
-        <span id="v-bar-c" style="background:var(--c);width:0%"></span>
-      </div>
-      <span class="tally-count" id="v-count">0 / 11</span>
-    </div>
+  <button class="btn" id="btn-start">はじめる</button>
+</section>
+
+<!-- ===== STEP 2: プラクリティ設問 ===== -->
+<section class="step" id="step-prakriti">
+  <div class="stage-head"><span class="stage-badge badge-p">STEP 1 / 2</span></div>
+  <h2 class="stage-title">生まれ持った身体の特徴</h2>
+  <p class="stage-note">
+    <strong>子どもの頃から今まで変わらない</strong>特徴で選んでください。<br>
+    今の状態ではなく、生まれつきの傾向です。
+  </p>
+
+  <div class="progress">
+    <span class="progress-lbl">回答</span>
+    <div class="progress-bar"><div class="progress-fill" id="p-fill"></div></div>
+    <span class="progress-count" id="p-count">0 / 9</span>
   </div>
 
-  <!-- Section 1: Prakriti -->
-  <div id="quiz-prakriti">
-    <div class="section-header">
-      <div class="section-title">
-        <span class="intro-badge badge-p" style="margin-right:6px">プラクリティ</span>身体の特徴
-      </div>
-      <p class="section-note">子どもの頃から今まで変わらない、生まれつきの特徴で選んでください</p>
-    </div>
+  <div id="quiz-prakriti"></div>
+
+  <button class="btn" id="btn-to-reveal" disabled>結果を見る</button>
+</section>
+
+<!-- ===== STEP 3: プラクリティ結果（引き） ===== -->
+<section class="step" id="step-reveal">
+  <div class="reveal" id="reveal-card">
+    <div class="reveal-tag">あなたの本来の体質</div>
+    <div class="reveal-name" id="reveal-name">—</div>
+    <div class="reveal-sub" id="reveal-sub"></div>
+    <p class="reveal-desc" id="reveal-desc"></p>
   </div>
 
-  <!-- Section 2: Vikriti -->
-  <div id="quiz-vikriti">
-    <div class="section-header">
-      <div class="section-title">
-        <span class="intro-badge badge-v" style="margin-right:6px">ヴィクリティ</span>行動と生理機能
-      </div>
-      <p class="section-note">ここ1ヶ月の状態で、いちばん近いものを選んでください</p>
-    </div>
+  <div class="hook">
+    これは<strong>生まれ持った設計図</strong>です。<br>
+    ただし、<strong>今のあなたがその通りとは限りません</strong>。
+    体質は変わらなくても、生活や環境によって今のバランスは傾きます。<br><br>
+    続けて、<strong>ここ1ヶ月のあなた</strong>を見ていきましょう。
   </div>
 
-  <!-- Result -->
-  <div class="result" id="result">
-    <div class="result-head">
-      <div class="result-tag">本来の体質（プラクリティ）</div>
-      <div class="result-dosha" id="p-name">—</div>
-      <div class="result-dosha-sub" id="p-sub"></div>
-    </div>
+  <button class="btn" id="btn-to-vikriti">今の状態を調べる（全11問）</button>
+  <button class="btn-sub" id="btn-back-prakriti">STEP 1 の回答をやり直す</button>
+</section>
 
-    <div class="compare-card">
-      <div class="compare-caption">本来の体質と、ここ1ヶ月の比較</div>
-      <div class="compare-row compare-head">
-        <span></span>
-        <span>本来</span>
-        <span>ここ1ヶ月</span>
-        <span></span>
-      </div>
-      <div id="compare-rows"></div>
-    </div>
+<!-- ===== STEP 4: ヴィクリティ設問 ===== -->
+<section class="step" id="step-vikriti">
+  <div class="stage-head"><span class="stage-badge badge-v">STEP 2 / 2</span></div>
+  <h2 class="stage-title">ここ1ヶ月のあなた</h2>
+  <p class="stage-note">
+    <strong>ここ1ヶ月の状態</strong>で、いちばん近いものを選んでください。<br>
+    正解・不正解はありません。今のありのままをお答えください。
+  </p>
 
-    <div class="gap-card" id="gap-card">
-      <p class="gap-title" id="gap-title"></p>
-      <p class="gap-text" id="gap-text"></p>
-    </div>
+  <div class="progress">
+    <span class="progress-lbl">回答</span>
+    <div class="progress-bar"><div class="progress-fill" id="v-fill"></div></div>
+    <span class="progress-count" id="v-count">0 / 11</span>
   </div>
 
-  <!-- Dosha Encyclopedia -->
-  <div class="detail" id="detail">
+  <div id="quiz-vikriti"></div>
+
+  <button class="btn" id="btn-to-final" disabled>診断結果を見る</button>
+</section>
+
+<!-- ===== STEP 5: 最終結果 ===== -->
+<section class="step" id="step-final">
+  <div class="result-head">
+    <div class="result-tag">本来の体質（プラクリティ）</div>
+    <div class="result-dosha" id="p-name">—</div>
+    <div class="result-dosha-sub" id="p-sub"></div>
+  </div>
+
+  <div class="compare-card">
+    <div class="compare-caption">本来の体質と、ここ1ヶ月の比較</div>
+    <div class="compare-row compare-head">
+      <span></span><span>本来</span><span>ここ1ヶ月</span><span></span>
+    </div>
+    <div id="compare-rows"></div>
+  </div>
+
+  <div class="gap-card" id="gap-card">
+    <p class="gap-title" id="gap-title"></p>
+    <p class="gap-text" id="gap-text"></p>
+  </div>
+
+  <div class="detail">
     <p class="detail-title">各ドーシャの詳細を見る</p>
     <div class="tabs" id="tabs"></div>
     <div class="dosha-panel" id="dosha-panel"></div>
   </div>
 
-  <button class="reset" id="reset">最初からやり直す</button>
+  <button class="btn-sub" id="btn-restart">最初からやり直す</button>
+</section>
+
 </div>
 
 <script>
@@ -480,9 +598,12 @@ const DATA_VIKRITI = [
 ];
 
 const DOSHA_INFO = {
-  A: {name:"ヴァータ", full:"Vata（ヴァータ）", sub:"風・空のエネルギー", color:"var(--a)"},
-  B: {name:"ピッタ", full:"Pitta（ピッタ）", sub:"火・水のエネルギー", color:"var(--b)"},
-  C: {name:"カパ", full:"Kapha（カパ）", sub:"水・地のエネルギー", color:"var(--c)"},
+  A: {name:"ヴァータ", full:"Vata（ヴァータ）", sub:"風・空のエネルギー", color:"var(--a)",
+      desc:"軽やかで動きが速く、発想力に富む性質です。切り替えが早く変化に強い一方、リズムが不規則になりやすく、冷えや乾燥が出やすい傾向があります。"},
+  B: {name:"ピッタ", full:"Pitta（ピッタ）", sub:"火・水のエネルギー", color:"var(--b)",
+      desc:"情熱的で集中力が高く、物事を成し遂げる力の強い性質です。目標に向かう推進力がある一方、熱がこもりやすく、頑張りすぎて止まれなくなる傾向があります。"},
+  C: {name:"カパ", full:"Kapha（カパ）", sub:"水・地のエネルギー", color:"var(--c)",
+      desc:"安定感があり穏やかで、持久力のある性質です。ゆっくりでも確実に積み上げる力がある一方、重さや停滞が出やすく、動き出すのに時間がかかる傾向があります。"},
 };
 
 const RISE_INFO = {
@@ -541,6 +662,93 @@ const DOSHA_DETAIL = {
   },
 };
 
+/* ---------- step navigation ---------- */
+function goStep(id){
+  document.querySelectorAll('.step').forEach(s => s.classList.toggle('active', s.id === id));
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+/* ---------- question rendering ---------- */
+function renderQuestions(data, prefix, containerId){
+  document.getElementById(containerId).innerHTML = data.map((item, i) => `
+    <div class="card">
+      <p class="q-label"><span class="q-num">${i+1}</span>${item.q}</p>
+      <div class="options">
+        ${['a','b','c'].map(k => `
+          <label class="opt" data-k="${k.toUpperCase()}">
+            <input type="radio" name="${prefix}${i}" value="${k.toUpperCase()}">
+            <span class="opt-body">
+              <span class="opt-tag">${k.toUpperCase()}</span>
+              <span>${item[k]}</span>
+            </span>
+          </label>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+renderQuestions(DATA_PRAKRITI, 'p', 'quiz-prakriti');
+renderQuestions(DATA_VIKRITI, 'v', 'quiz-vikriti');
+
+/* ---------- counting ---------- */
+function countSection(data, prefix){
+  const counts = {A:0,B:0,C:0};
+  let answered = 0;
+  data.forEach((_,i) => {
+    const el = document.querySelector(`input[name="${prefix}${i}"]:checked`);
+    if(el){ counts[el.value]++; answered++; }
+  });
+  return {counts, answered};
+}
+
+function updateProgress(data, prefix, fillId, countId, btnId){
+  const {answered} = countSection(data, prefix);
+  document.getElementById(fillId).style.width = (answered / data.length * 100) + '%';
+  document.getElementById(countId).textContent = `${answered} / ${data.length}`;
+  const btn = document.getElementById(btnId);
+  btn.disabled = answered < data.length;
+  return answered === data.length;
+}
+
+document.getElementById('quiz-prakriti').addEventListener('change', () =>
+  updateProgress(DATA_PRAKRITI, 'p', 'p-fill', 'p-count', 'btn-to-reveal'));
+document.getElementById('quiz-vikriti').addEventListener('change', () =>
+  updateProgress(DATA_VIKRITI, 'v', 'v-fill', 'v-count', 'btn-to-final'));
+
+function getDominantKeys(counts){
+  const max = Math.max(counts.A, counts.B, counts.C);
+  if(max === 0) return [];
+  return ['A','B','C'].filter(k => counts[k] === max);
+}
+function prakritiLabel(keys){
+  if(keys.length === 1) return DOSHA_INFO[keys[0]].full;
+  return keys.map(k => DOSHA_INFO[k].name).join('・');
+}
+function prakritiPlain(keys){
+  return keys.map(k => DOSHA_INFO[k].name).join('・');
+}
+
+/* ---------- STEP 3: prakriti reveal ---------- */
+function showReveal(){
+  const {counts} = countSection(DATA_PRAKRITI, 'p');
+  const keys = getDominantKeys(counts);
+  const single = keys.length === 1;
+  const color = single ? DOSHA_INFO[keys[0]].color : 'var(--ink)';
+
+  const nameEl = document.getElementById('reveal-name');
+  nameEl.textContent = single ? DOSHA_INFO[keys[0]].name : prakritiPlain(keys);
+  nameEl.style.color = color;
+  document.getElementById('reveal-card').style.borderColor = single ? color : 'var(--line)';
+  document.getElementById('reveal-sub').textContent = single
+    ? DOSHA_INFO[keys[0]].sub
+    : '2つの性質を併せ持つ複合体質';
+  document.getElementById('reveal-desc').textContent = single
+    ? DOSHA_INFO[keys[0]].desc
+    : keys.map(k => DOSHA_INFO[k].desc).join(' ');
+
+  goStep('step-reveal');
+}
+
+/* ---------- STEP 5: final result ---------- */
 let activeTab = null;
 
 function renderTabs(){
@@ -550,18 +758,15 @@ function renderTabs(){
       ${DOSHA_DETAIL[k].label}
       <span class="tab-jp">${DOSHA_DETAIL[k].jp}</span>
       <span class="tab-badge">${k}</span>
-    </div>
-  `).join('');
-  tabsEl.querySelectorAll('.tab').forEach(t => {
-    t.addEventListener('click', () => showDoshaDetail(t.dataset.k));
-  });
+    </div>`).join('');
+  tabsEl.querySelectorAll('.tab').forEach(t =>
+    t.addEventListener('click', () => showDoshaDetail(t.dataset.k)));
 }
 
 function showDoshaDetail(key){
   activeTab = key;
-  document.querySelectorAll('.tab').forEach(t => {
-    t.classList.toggle('active', t.dataset.k === key);
-  });
+  document.querySelectorAll('.tab').forEach(t =>
+    t.classList.toggle('active', t.dataset.k === key));
   const d = DOSHA_DETAIL[key];
   document.getElementById('dosha-panel').innerHTML = `
     <div class="dosha-head">
@@ -573,169 +778,98 @@ function showDoshaDetail(key){
         <div class="rl">${r.l}</div>
         <div>${i===0?'<p class="col-head">アーユルヴェーダ的特徴</p>':''}${r.ay}</div>
         <div class="west">${i===0?'<p class="col-head">西洋医学的・生理学的解釈</p>':''}${r.we}</div>
-      </div>
-    `).join('')}
-  `;
+      </div>`).join('')}`;
 }
 
 renderTabs();
 
-function renderQuestions(data, prefix, containerId){
-  const el = document.getElementById(containerId);
-  data.forEach((item, i) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <p class="q-label">${item.q}</p>
-      <div class="options">
-        ${['a','b','c'].map(k => `
-          <label class="opt" data-k="${k.toUpperCase()}">
-            <input type="radio" name="${prefix}${i}" value="${k.toUpperCase()}">
-            <span class="opt-body">
-              <span class="opt-tag">${k.toUpperCase()}</span>
-              <span>${item[k]}</span>
-            </span>
-          </label>
-        `).join('')}
-      </div>
-    `;
-    el.appendChild(card);
-  });
-}
-
-renderQuestions(DATA_PRAKRITI, 'p', 'quiz-prakriti');
-renderQuestions(DATA_VIKRITI, 'v', 'quiz-vikriti');
-
-function getDominantKeys(counts){
-  const max = Math.max(counts.A, counts.B, counts.C);
-  if(max === 0) return [];
-  return ['A','B','C'].filter(k => counts[k] === max);
-}
-
-function prakritiLabel(keys){
-  if(keys.length === 1) return DOSHA_INFO[keys[0]].full;
-  return keys.map(k => DOSHA_INFO[k].name).join('・') + '　複合体質';
-}
-
-function prakritiSub(keys){
-  if(keys.length === 1) return DOSHA_INFO[keys[0]].sub;
-  return '2つの性質を併せ持つ体質です';
-}
-
-function tally(){
-  const pC = {A:0,B:0,C:0};
-  const vC = {A:0,B:0,C:0};
-  let pAns = 0, vAns = 0;
-
-  DATA_PRAKRITI.forEach((_,i) => {
-    const el = document.querySelector(`input[name="p${i}"]:checked`);
-    if(el){ pC[el.value]++; pAns++; }
-  });
-  DATA_VIKRITI.forEach((_,i) => {
-    const el = document.querySelector(`input[name="v${i}"]:checked`);
-    if(el){ vC[el.value]++; vAns++; }
-  });
-
+function showFinal(){
+  const pC = countSection(DATA_PRAKRITI, 'p').counts;
+  const vC = countSection(DATA_VIKRITI, 'v').counts;
   const pFull = DATA_PRAKRITI.length;
   const vFull = DATA_VIKRITI.length;
 
-  // Update tally bars (proportional to answered)
-  ['a','b','c'].forEach(k => {
-    const K = k.toUpperCase();
-    document.getElementById(`p-bar-${k}`).style.width = (pAns ? pC[K]/pAns*100 : 0) + '%';
-    document.getElementById(`v-bar-${k}`).style.width = (vAns ? vC[K]/vAns*100 : 0) + '%';
+  const pKeys = getDominantKeys(pC);
+  const single = pKeys.length === 1;
+  const headEl = document.getElementById('p-name');
+  headEl.textContent = prakritiLabel(pKeys);
+  headEl.style.color = single ? DOSHA_INFO[pKeys[0]].color : 'var(--ink)';
+  document.getElementById('p-sub').textContent = single
+    ? DOSHA_INFO[pKeys[0]].sub
+    : '2つの性質を併せ持つ体質です';
+  document.querySelector('.result-head').style.borderColor =
+    single ? DOSHA_INFO[pKeys[0]].color : 'var(--line)';
+
+  // 設問数が違う（9問 / 11問）ので比率に正規化してから差分を取る
+  const pPct = {}, vPct = {}, delta = {};
+  ['A','B','C'].forEach(k => {
+    pPct[k] = Math.round(pC[k] / pFull * 100);
+    vPct[k] = Math.round(vC[k] / vFull * 100);
+    delta[k] = vPct[k] - pPct[k];
   });
-  document.getElementById('p-count').textContent = `${pAns} / ${pFull}`;
-  document.getElementById('v-count').textContent = `${vAns} / ${vFull}`;
 
-  const allDone = pAns === pFull && vAns === vFull;
-  const resultEl = document.getElementById('result');
-  const detailEl = document.getElementById('detail');
+  const maxDelta = Math.max(delta.A, delta.B, delta.C);
+  const riseKey = maxDelta >= RISE_THRESHOLD
+    ? ['A','B','C'].find(k => delta[k] === maxDelta)
+    : null;
 
-  if(allDone){
-    const pKeys = getDominantKeys(pC);
-    const headEl = document.getElementById('p-name');
-    headEl.textContent = prakritiLabel(pKeys);
-    headEl.style.color = pKeys.length === 1 ? DOSHA_INFO[pKeys[0]].color : 'var(--ink)';
-    document.getElementById('p-sub').textContent = prakritiSub(pKeys);
-    document.querySelector('.result-head').style.borderColor =
-      pKeys.length === 1 ? DOSHA_INFO[pKeys[0]].color : 'var(--line)';
+  document.getElementById('compare-rows').innerHTML = ['A','B','C'].map(k => {
+    const d = delta[k];
+    const cls = d > 0 ? 'up' : (d < 0 ? 'down' : 'flat');
+    const sign = d > 0 ? '+' : (d < 0 ? '−' : '±');
+    return `
+      <div class="compare-row${k === riseKey ? ' rising' : ''}">
+        <span class="cmp-name" style="color:${DOSHA_INFO[k].color}">${DOSHA_INFO[k].name}</span>
+        <span class="cmp-val">${pPct[k]}%</span>
+        <span class="cmp-val now">${vPct[k]}%</span>
+        <span class="cmp-delta ${cls}">${sign}${Math.abs(d)}</span>
+      </div>`;
+  }).join('');
 
-    // 設問数が違う（9問 / 11問）ので比率に正規化してから差分を取る
-    const pPct = {}, vPct = {}, delta = {};
-    ['A','B','C'].forEach(k => {
-      pPct[k] = Math.round(pC[k] / pFull * 100);
-      vPct[k] = Math.round(vC[k] / vFull * 100);
-      delta[k] = vPct[k] - pPct[k];
-    });
+  const gapCard = document.getElementById('gap-card');
+  const titleEl = document.getElementById('gap-title');
+  const textEl = document.getElementById('gap-text');
 
-    const maxDelta = Math.max(delta.A, delta.B, delta.C);
-    const riseKey = maxDelta >= RISE_THRESHOLD
-      ? ['A','B','C'].find(k => delta[k] === maxDelta)
-      : null;
-
-    document.getElementById('compare-rows').innerHTML = ['A','B','C'].map(k => {
-      const d = delta[k];
-      const cls = d > 0 ? 'up' : (d < 0 ? 'down' : 'flat');
-      const sign = d > 0 ? '+' : (d < 0 ? '−' : '±');
-      return `
-        <div class="compare-row${k === riseKey ? ' rising' : ''}">
-          <span class="cmp-name" style="color:${DOSHA_INFO[k].color}">${DOSHA_INFO[k].name}</span>
-          <span class="cmp-val">${pPct[k]}%</span>
-          <span class="cmp-val now">${vPct[k]}%</span>
-          <span class="cmp-delta ${cls}">${sign}${Math.abs(d)}</span>
-        </div>`;
-    }).join('');
-
-    const gapCard = document.getElementById('gap-card');
-    const titleEl = document.getElementById('gap-title');
-    const textEl = document.getElementById('gap-text');
-
-    if(!riseKey){
-      titleEl.textContent = "本来のバランスを保てています";
-      textEl.textContent = `身体の特徴から見た本来の体質と、ここ1ヶ月の状態に大きなズレはありません。${prakritiLabel(pKeys).replace(/　複合体質/,'')}の性質が、乱れずに素直に出ている状態です。`;
-      gapCard.style.background = '#EEF4E8';
-      gapCard.style.borderColor = '#7AA06A';
-    } else {
-      const rise = DOSHA_INFO[riseKey].name;
-      const info = RISE_INFO[riseKey];
-      const isSame = pKeys.includes(riseKey);
-      if(isSame){
-        titleEl.textContent = `${rise}が強まりすぎています`;
-        textEl.textContent = `もともと${rise}の性質が強いあなたは、その性質がさらに増えやすい傾向があります。ここ1ヶ月はまさにその状態です。${info.signs}——こうしたサインは出ていませんか。${info.care}が、本来のバランスに戻る近道です。`;
-      } else {
-        const base = pKeys.map(k => DOSHA_INFO[k].name).join('・');
-        titleEl.textContent = `${rise}が増えています`;
-        textEl.textContent = `本来は${base}の体質ですが、ここ1ヶ月は${rise}が優勢になっています。${info.signs}——こうしたサインは出ていませんか。${info.care}を意識すると、本来の${base}のバランスに戻りやすくなります。`;
-      }
-      gapCard.style.background = '#FAF5E8';
-      gapCard.style.borderColor = '#C49A3A';
-    }
-
-    resultEl.classList.add('show');
-    detailEl.classList.add('show');
-    if(!activeTab || !detailEl.dataset.autoSet){
-      showDoshaDetail(riseKey || pKeys[0] || 'A');
-      detailEl.dataset.autoSet = "1";
-    }
-    resultEl.scrollIntoView({behavior:'smooth', block:'start'});
+  if(!riseKey){
+    titleEl.textContent = "本来のバランスを保てています";
+    textEl.textContent = `生まれ持った体質と、ここ1ヶ月の状態に大きなズレはありません。${prakritiPlain(pKeys)}の性質が、乱れずに素直に出ている状態です。`;
+    gapCard.style.background = '#EEF4E8';
+    gapCard.style.borderColor = '#7AA06A';
   } else {
-    resultEl.classList.remove('show');
-    detailEl.classList.remove('show');
-    detailEl.dataset.autoSet = "";
+    const rise = DOSHA_INFO[riseKey].name;
+    const info = RISE_INFO[riseKey];
+    if(pKeys.includes(riseKey)){
+      titleEl.textContent = `${rise}が強まりすぎています`;
+      textEl.textContent = `もともと${rise}の性質が強いあなたは、その性質がさらに増えやすい傾向があります。ここ1ヶ月はまさにその状態です。${info.signs}——こうしたサインは出ていませんか。${info.care}が、本来のバランスに戻る近道です。`;
+    } else {
+      const base = prakritiPlain(pKeys);
+      titleEl.textContent = `${rise}が増えています`;
+      textEl.textContent = `本来は${base}の体質ですが、ここ1ヶ月は${rise}が優勢になっています。${info.signs}——こうしたサインは出ていませんか。${info.care}を意識すると、本来の${base}のバランスに戻りやすくなります。`;
+    }
+    gapCard.style.background = '#FAF5E8';
+    gapCard.style.borderColor = '#C49A3A';
   }
+
+  showDoshaDetail(riseKey || pKeys[0] || 'A');
+  goStep('step-final');
 }
 
-document.getElementById('quiz-prakriti').addEventListener('change', tally);
-document.getElementById('quiz-vikriti').addEventListener('change', tally);
-document.getElementById('reset').addEventListener('click', () => {
-  document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+/* ---------- wiring ---------- */
+document.getElementById('btn-start').addEventListener('click', () => goStep('step-prakriti'));
+document.getElementById('btn-to-reveal').addEventListener('click', showReveal);
+document.getElementById('btn-to-vikriti').addEventListener('click', () => goStep('step-vikriti'));
+document.getElementById('btn-back-prakriti').addEventListener('click', () => goStep('step-prakriti'));
+document.getElementById('btn-to-final').addEventListener('click', showFinal);
+document.getElementById('btn-restart').addEventListener('click', () => {
+  document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
   activeTab = null;
-  tally();
-  window.scrollTo({top:0, behavior:'smooth'});
+  updateProgress(DATA_PRAKRITI, 'p', 'p-fill', 'p-count', 'btn-to-reveal');
+  updateProgress(DATA_VIKRITI, 'v', 'v-fill', 'v-count', 'btn-to-final');
+  goStep('step-intro');
 });
 
-tally();
+updateProgress(DATA_PRAKRITI, 'p', 'p-fill', 'p-count', 'btn-to-reveal');
+updateProgress(DATA_VIKRITI, 'v', 'v-fill', 'v-count', 'btn-to-final');
 </script>
 </body>
 </html>
